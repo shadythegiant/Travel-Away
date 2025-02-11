@@ -174,7 +174,10 @@ export function App() {
   // delete all items
 
   function deleteItems() {
-    setItems((items) => (items = []));
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all the items? "
+    );
+    if (confirmed) setItems((items) => (items = []));
   }
 
   // function update item
