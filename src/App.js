@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { initialItems } from "./initialItems";
+// import { initialItems } from "./initialItems";
 // components
 // logo
 
@@ -66,12 +66,17 @@ function Form({ onAddItems }) {
 
 // Packing list
 
-function PackingList({ items, onDelete }) {
+function PackingList({ items, onDelete, updateItem }) {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} onDelete={onDelete} />
+          <Item
+            item={item}
+            key={item.id}
+            onDelete={onDelete}
+            updateItem={updateItem}
+          />
         ))}
       </ul>
     </div>
@@ -80,9 +85,14 @@ function PackingList({ items, onDelete }) {
 
 // item
 
-function Item({ item, onDelete }) {
+function Item({ item, onDelete, updateItem }) {
   return (
     <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => updateItem(item.id)}
+      />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
@@ -93,10 +103,24 @@ function Item({ item, onDelete }) {
 
 //Stats
 
-function Stats() {
+function Stats({ items }) {
+  // conditional return
+  if (!items.length)
+    return <p className="stats"> start adding items to your list</p>;
+
+  // Deriving state out of alrady existing props / state
+
+  let packed = items.filter((item) => item.packed === true);
+  let percentage = Math.round((packed.length / items.length) * 100);
+  console.log(packed);
   return (
     <footer className="stats">
-      <em> you have selected X and already packed X</em>
+      <em>
+        {percentage !== 100
+          ? ` 🧳 you have selected ${items.length} and already packed ${packed.length} (
+          ${percentage}%)`
+          : `You have everything to go ✈️`}
+      </em>
     </footer>
   );
 }
@@ -116,12 +140,28 @@ export function App() {
   function handleItemDelete(id) {
     setItems((items) => items.filter((item) => item.id !== id));
   }
+
+  // function update item
+
+  function updateItem(id) {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  }
+
+  //
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItem} />
-      <PackingList items={items} onDelete={handleItemDelete} />
-      <Stats />
+      <PackingList
+        items={items}
+        onDelete={handleItemDelete}
+        updateItem={updateItem}
+      />
+      <Stats items={items} />
     </div>
   );
 }
