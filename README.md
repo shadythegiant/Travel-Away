@@ -1,70 +1,208 @@
-# Getting Started with Create React App
+# Travel Packing List App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple React app to help you track items needed for travel. This app allows you to add items to a list, mark them as packed, and sort the list. It’s a great project for learning basic React state management and component structure. The project is part of Jonas's React course
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Add Items**: Add new items to your travel packing list.
+- **Track Items**: See the total number of items and how many are packed.
+- **Mark as Packed**: Toggle items between "packed" and "unpacked."
+- **Sort Items**: Sort items by description, packed status, or input order.
+- **Delete Items**: Remove items you no longer need.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Screenshots
 
-### `npm test`
+![Travel Packing List App Screenshot](./screenshot.png) <!-- Add a screenshot if available -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Technologies Used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **React**: JavaScript library for building user interfaces.
+- **CSS**: Basic styling for the app.
+- **Create React App**: Toolchain for setting up the project.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Installation and Setup
 
-### `npm run eject`
+Follow these steps to run the app locally:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Clone the Repository**:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   git clone https://github.com/your-username/travel-packing-list.git
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Navigate to the Project Directory**:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   cd travel-packing-list
+   ```
 
-## Learn More
+3. **Install Dependencies**:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm install
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. **Run the Development Server**:
 
-### Code Splitting
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+5. **Open the App**:
+   - The app will open automatically in your browser at `http://localhost:3000`.
+   - If it doesn’t, manually navigate to the URL.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## How to Use the App
 
-### Making a Progressive Web App
+1. **Add Items**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   - Type the item name in the input field and click "Add" or press Enter.
 
-### Advanced Configuration
+2. **Mark Items as Packed**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   - Click the checkbox next to an item to mark it as packed.
 
-### Deployment
+3. **Sort Items**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+   - Use the "Sort by" dropdown to sort items by:
+     - **Input Order**: The order in which items were added.
+     - **Description**: Alphabetical order.
+     - **Packed Status**: Packed items first or last.
 
-### `npm run build` fails to minify
+4. **Delete Items**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+   - Click the trash icon next to an item to remove it from the list.
+
+5. **Track Progress**:
+   - The app displays the total number of items and how many are packed.
+
+---
+
+## Project Structure
+
+```
+travel-packing-list/
+├── public/                  # Static assets (e.g., index.html)
+│   └── index.html
+├── src/                     # React source files
+│   ├── components/          # Reusable components
+│   │   ├── ItemList.js      # Displays the list of items
+│   │   ├── AddItem.js       # Form to add new items
+│   │   └── Stats.js         # Tracks items and packed status
+│   ├── App.js               # Main application component
+│   ├── index.js             # Entry point
+│   ├── App.css              # Styles for the App component
+│   └── index.css            # Global styles
+├── package.json             # Project dependencies and scripts
+└── README.md                # Project documentation
+```
+
+---
+
+## Code Example
+
+### Adding an Item
+
+```javascript
+// AddItem.js
+import { useState } from "react";
+
+function AddItem({ onAddItem }) {
+  const [itemName, setItemName] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!itemName) return;
+    onAddItem(itemName);
+    setItemName("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Add an item..."
+        value={itemName}
+        onChange={(e) => setItemName(e.target.value)}
+      />
+      <button type="submit">Add</button>
+    </form>
+  );
+}
+
+export default AddItem;
+```
+
+### Tracking Items
+
+```javascript
+// Stats.js
+function Stats({ items }) {
+  const totalItems = items.length;
+  const packedItems = items.filter((item) => item.packed).length;
+
+  return (
+    <footer>
+      <p>
+        🧳 You have {totalItems} items on your list, and you've packed{" "}
+        {packedItems} ({Math.round((packedItems / totalItems) * 100)}%).
+      </p>
+    </footer>
+  );
+}
+
+export default Stats;
+```
+
+---
+
+## Customization
+
+- **Add More Features**:
+  - Add a category field for items (e.g., clothing, electronics).
+  - Allow users to edit item names.
+- **Change Styles**:
+  - Modify the `App.css` or `index.css` files to customize the app’s appearance.
+
+---
+
+## Contributing
+
+Contributions are welcome! If you'd like to improve this project, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request.
+
+---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## Acknowledgments
+
+- This project was created to practice React state management and component structure.
+- Inspired by [Jonas's React course].
+
+---
+
+Enjoy packing for your next trip with this app! 🚀
+
+---
+
+Let me know if you need further assistance! 😊
