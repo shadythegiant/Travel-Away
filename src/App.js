@@ -66,11 +66,28 @@ function Form({ onAddItems }) {
 
 // Packing list
 
-function PackingList({ items, onDelete, updateItem }) {
+function PackingList({ items, onDelete, updateItem, deleteItems }) {
+  const [sortBy, setSortBy] = useState("input");
+
+  let sortedItems;
+  if (sortBy === "input") sortedItems = items;
+
+  // slice method uses since sorted mutetes the array
+  if (sortBy === "description")
+    sortedItems = items
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+
+  if (sortBy === "packed")
+    sortedItems = items
+      .slice()
+      .sort((a, b) => Number(b.packed) - Number(a.packed));
+
+  // JSX
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             item={item}
             key={item.id}
@@ -79,6 +96,18 @@ function PackingList({ items, onDelete, updateItem }) {
           />
         ))}
       </ul>
+      <div className="actions">
+        <select
+          name="sorting items"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          <option value="input">Sort by input order </option>
+          <option value="description">Sort by description </option>
+          <option value="packed">Sort By packed Status </option>
+        </select>
+        <button onClick={deleteItems}>Clear List</button>
+      </div>
     </div>
   );
 }
@@ -106,13 +135,15 @@ function Item({ item, onDelete, updateItem }) {
 function Stats({ items }) {
   // conditional return
   if (!items.length)
-    return <p className="stats"> start adding items to your list</p>;
+    return <p className="stats"> Start adding items to your list - 🧳</p>;
 
   // Deriving state out of alrady existing props / state
 
   let packed = items.filter((item) => item.packed === true);
   let percentage = Math.round((packed.length / items.length) * 100);
-  console.log(packed);
+  //
+
+  //
   return (
     <footer className="stats">
       <em>
@@ -140,6 +171,11 @@ export function App() {
   function handleItemDelete(id) {
     setItems((items) => items.filter((item) => item.id !== id));
   }
+  // delete all items
+
+  function deleteItems() {
+    setItems((items) => (items = []));
+  }
 
   // function update item
 
@@ -160,6 +196,7 @@ export function App() {
         items={items}
         onDelete={handleItemDelete}
         updateItem={updateItem}
+        deleteItems={deleteItems}
       />
       <Stats items={items} />
     </div>
