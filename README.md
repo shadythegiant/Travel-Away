@@ -1,4 +1,4 @@
-# Travel Packing List App
+8# Travel Packing List App
 
 A simple React app to help you track items needed for travel. This app allows you to add items to a list, mark them as packed, and sort the list. It’s a great project for learning basic React state management and component structure. The project is part of Jonas's React course
 
@@ -107,62 +107,7 @@ travel-packing-list/
 └── README.md                # Project documentation
 ```
 
----
 
-## Code Example
-
-### Adding an Item
-
-```javascript
-// AddItem.js
-import { useState } from "react";
-
-function AddItem({ onAddItem }) {
-  const [itemName, setItemName] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!itemName) return;
-    onAddItem(itemName);
-    setItemName("");
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Add an item..."
-        value={itemName}
-        onChange={(e) => setItemName(e.target.value)}
-      />
-      <button type="submit">Add</button>
-    </form>
-  );
-}
-
-export default AddItem;
-```
-
-### Tracking Items
-
-```javascript
-// Stats.js
-function Stats({ items }) {
-  const totalItems = items.length;
-  const packedItems = items.filter((item) => item.packed).length;
-
-  return (
-    <footer>
-      <p>
-        🧳 You have {totalItems} items on your list, and you've packed{" "}
-        {packedItems} ({Math.round((packedItems / totalItems) * 100)}%).
-      </p>
-    </footer>
-  );
-}
-
-export default Stats;
-```
 
 ---
 
